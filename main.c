@@ -73,16 +73,17 @@ void tokenize(NodeToken tokens[], size_t *num_tokens, const char *buffer,
               size_t buf_size) {
   TokenizerState state = state_from_token_stream(tokens, *num_tokens);
 
-//  size_t n_chars_read = 0;
   char cur_char;
   for (size_t n = 0; n < buf_size; ++n) {
     cur_char = buffer[n];
-    printf("character: %c\n", cur_char);
-    if (isalnum(cur_char) && (state.in_word || state.buffer_size == 0)) {
+    if (isalnum(cur_char) && (state.in_word || (isalpha(cur_char) || state.buffer_size > 0))) {
       state.buffer[state.buffer_size++] = cur_char;
       state.in_word = true;
     } else if (isblank(cur_char)) {
-      if (state.buffer_size > 0) {
+      if (state.buffer_size > 0 && state.in_word) {
+        state.buffer[state.buffer_size] = '\0';
+
+        // Is it a reserved word?
         for (int res_word_i = 0; WB_RESERVED_WORDS[res_word_i]; res_word_i++) {
           size_t res_size = strlen(WB_RESERVED_WORDS[res_word_i]);
           if (state.buffer_size == res_size) {
@@ -94,8 +95,21 @@ void tokenize(NodeToken tokens[], size_t *num_tokens, const char *buffer,
               *num_tokens += 1;
               state.buffer_size = 0;
               state.in_word = false;
+              break;
             }
           }
+        }
+
+        // Is it an identifier then?
+         if (state.buffer_size > 0 && state.in_word) {
+           NodeToken new_token = {};
+           new_token.type = NODE_IDENT;
+           new_token.value.identifier = malloc(state.buffer_size + 1);
+           strncpy(new_token.value.identifier, state.buffer, state.buffer_size + 1);
+           state.buffer_size = 0;
+           state.in_word = false;
+           tokens[*num_tokens] = new_token;
+           *num_tokens += 1;
         }
       }
     }
@@ -109,7 +123,6 @@ void tokenize_file(char *filename, NodeToken tokens[], size_t *num_tokens) {
   }
 
   *num_tokens = 0;
-  //    NodeToken tokens[MAX_TOKENS];
 
   char buf[1024];
   size_t nread;
@@ -133,7 +146,9 @@ test test_tokenize_file1(TestRun *test_run) {
   fclose(tmpfd);
 
   NodeToken expected[] = {
-      {.type = NODE_RESERVED_WORD, .value = {.reserved_word = "int"}}};
+    {.type = NODE_RESERVED_WORD, .value = {.reserved_word = "int"}},
+    {.type = NODE_IDENT, .value = {.identifier = "a"}}
+  };
   size_t expected_len = sizeof(expected) / sizeof(expected[0]);
   NodeToken tokens[MAX_TOKENS];
   size_t token_length;
@@ -144,25 +159,6 @@ test test_tokenize_file1(TestRun *test_run) {
   remove(test_filename);
 }
 
-#if 0
-test test_tokenize_file(TestRun *test_run) {
-  NodeToken expected[] = {
-
-  };
-  NodeToken tokens[MAX_TOKENS];
-  size_t token_length;
-  tokenize_file(".\\examples\\hello_world\\src\\main.wb", tokens,
-                &token_length);
-  mu_assert_array_equal(node_token_eq, tokens, token_length, expected, 0);
-}
-#endif
-
 static void run_the_tests(TestRun *test_run) { test_tokenize_file1(test_run); }
 
 RUN_TESTS(run_the_tests);
-
-// int main() {
-//    compile(".\\examples\\hello_world\\src\\main.wb");
-//
-//    return 0;
-//}
