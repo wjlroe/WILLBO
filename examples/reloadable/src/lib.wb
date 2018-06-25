@@ -1,0 +1,22 @@
+struct Position {
+  x: i32,
+  y: i32,
+}
+
+struct Entity {
+  position: Position,
+}
+
+struct State {
+  entities: []Entity,
+}
+
+pub fn update(dt: i64) {
+  state.animate_with_dt(dt)
+}
+
+pub fn render {
+  for entity in state.entities {
+    draw(entity)
+  }
+}

@@ -1,0 +1,8 @@
+import {render, update} from reloadable;
+
+fn main : i32 {
+  while true {
+    update(100)
+    render
+  }
+}
