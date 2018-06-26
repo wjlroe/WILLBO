@@ -8,10 +8,6 @@
 
 char *WB_RESERVED_WORDS[] = {"int", NULL};
 
-typedef struct StructNode {
-  char *name;
-} StructNode;
-
 typedef enum NodeType {
   NODE_TOPLEVEL,
   NODE_STRUCT,
@@ -22,7 +18,6 @@ typedef enum NodeType {
 } NodeType;
 
 typedef union {
-  StructNode struct_node;
   char syntax_character;
   char *identifier;
   char *reserved_word;
@@ -44,6 +39,11 @@ bool node_token_eq(NodeToken *left, NodeToken *right) {
       return !strcmp(left->value.identifier, right->value.identifier);
     case NODE_RESERVED_WORD:
       return !strcmp(left->value.reserved_word, right->value.reserved_word);
+    case NODE_TOPLEVEL:
+    case NODE_STRUCT:
+    case NODE_SYNTAX:
+    case NODE_WORD:
+      return false;
   }
 
   return true;
@@ -69,6 +69,12 @@ TokenizerState state_from_token_stream(NodeToken tokens[], size_t num_tokens) {
       case NODE_WORD: {
         state.in_word = true;
       } break;
+      case NODE_TOPLEVEL:
+      case NODE_STRUCT:
+      case NODE_IDENT:
+      case NODE_SYNTAX:
+      case NODE_RESERVED_WORD:
+        break;
     }
   }
 
