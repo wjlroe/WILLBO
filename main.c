@@ -56,6 +56,8 @@ bool node_token_eq(NodeToken *left, NodeToken *right) {
     return !strcmp(left->value.reserved_word, right->value.reserved_word);
   case NODE_OPERATOR:
     return left->value.op_type == right->value.op_type;
+  case NODE_NUMBER:
+    return !strcmp(left->value.digits, right->value.digits);
   case NODE_TOPLEVEL:
   case NODE_STRUCT:
   case NODE_SYNTAX:
@@ -89,6 +91,7 @@ TokenizerState state_from_token_stream(NodeToken tokens[], size_t num_tokens) {
     case NODE_SYNTAX:
     case NODE_RESERVED_WORD:
     case NODE_OPERATOR:
+    case NODE_NUMBER:
       break;
     }
   }
@@ -209,9 +212,11 @@ test test_node_token_eq(TestRun *test_run) {
   NodeToken operator_eq = {.type = NODE_OPERATOR, .value = {.op_type = OP_EQ}};
   NodeToken identifier1 = {.type = NODE_IDENT, .value = {.identifier = "woot"}};
   NodeToken identifier2 = {.type = NODE_IDENT, .value = {.identifier = "abcd"}};
+  NodeToken number1 = {.type = NODE_NUMBER, .value = {.digits = "1"}};
+  NodeToken number9 = {.type = NODE_NUMBER, .value = {.digits = "9"}};
 
   NodeToken tokens[] = {reserved_word_int, operator_eq, identifier1,
-                        identifier2};
+                        identifier2,       number1,     number9};
   size_t num_tokens = sizeof(tokens) / sizeof(NodeToken);
   for (size_t i = 0; i < num_tokens; i++) {
     for (size_t j = 0; j < num_tokens; j++) {
