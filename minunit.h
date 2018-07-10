@@ -37,10 +37,10 @@
 #define mu_assert_array_equal(comparison_fn, actual, actual_len, expected,     \
                               expected_len)                                    \
   {                                                                            \
-    mu_assert_int_equal(actual_len, expected_len);                             \
+    mu_assert_int_equal((int)actual_len, (int)expected_len);                   \
     for (size_t i = 0; i < actual_len; i++) {                                  \
       mu_assert(comparison_fn(&actual[i], &expected[i]),                       \
-                "Element at index %d not equal", i);                           \
+                "Element at index %lu not equal", i);                          \
     }                                                                          \
   }
 
