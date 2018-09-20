@@ -260,8 +260,8 @@ test test_tokenize_file1(TestRun *test_run) {
 }
 
 static void run_the_tests(TestRun *test_run) {
-  test_node_token_eq(test_run);
-  test_tokenize_file1(test_run);
+  mu_run_test(test_node_token_eq);
+  mu_run_test(test_tokenize_file1);
 }
 
 RUN_TESTS(run_the_tests);
