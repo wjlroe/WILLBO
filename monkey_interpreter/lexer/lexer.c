@@ -1,4 +1,6 @@
 #include "lexer.h"
+#include <ctype.h>
+#include <stdbool.h>
 
 void ReadChar(Lexer* Lexer) {
     if (Lexer->ReadPosition >= strlen(Lexer->Input)) {
@@ -28,8 +30,45 @@ Token NewToken(TokenType Type, char* Literal) {
     return (Token){.TokenType = Type, .Literal = Literal};
 }
 
+bool IsLetter(char Character) {
+    return (isalpha(Character) || Character == '_');
+}
+
+char* ReadIdentifier(Lexer* Lexer) {
+    int Position = Lexer->Position;
+    while (IsLetter(Lexer->CurrentChar)) {
+        ReadChar(Lexer);
+    }
+    int SubStringSize = Lexer->Position - Position;
+    char* Result = malloc(SubStringSize + 1);  // plus null terminator
+    char* FromInput = Lexer->Input + Position;
+    memcpy(Result, FromInput, SubStringSize);
+    return Result;
+}
+
+char* ReadNumber(Lexer* Lexer) {
+    int Position = Lexer->Position;
+    while (isdigit(Lexer->CurrentChar)) {
+        ReadChar(Lexer);
+    }
+    int SubStringSize = Lexer->Position - Position;
+    char* Result = malloc(SubStringSize + 1);  // plus null terminator
+    char* FromInput = Lexer->Input + Position;
+    memcpy(Result, FromInput, SubStringSize);
+    return Result;
+}
+
+void SkipWhitespace(Lexer* Lexer) {
+    while ((Lexer->CurrentChar == ' ') || (Lexer->CurrentChar == '\t') ||
+           (Lexer->CurrentChar == '\n') || (Lexer->CurrentChar == '\r')) {
+        ReadChar(Lexer);
+    }
+}
+
 Token NextToken(Lexer* Lexer) {
     Token Token;
+
+    SkipWhitespace(Lexer);
 
     switch (Lexer->CurrentChar) {
         case '=': {
@@ -59,7 +98,22 @@ Token NextToken(Lexer* Lexer) {
         case 0: {
             Token.Literal = "";
             Token.TokenType = TOKEN_EOF;
-        }
+        } break;
+        default: {
+            if (IsLetter(Lexer->CurrentChar)) {
+                Token.Literal = ReadIdentifier(Lexer);
+                Token.TokenType = LookupIdent(Token.Literal);
+                return Token;
+            } else if (isdigit(Lexer->CurrentChar)) {
+                Token.TokenType = TOKEN_INT;
+                Token.Literal = ReadNumber(Lexer);
+                return Token;
+            } else {
+                char IllegalChar[2] = "\0";
+                IllegalChar[0] = Lexer->CurrentChar;
+                Token = NewToken(TOKEN_ILLEGAL, IllegalChar);
+            }
+        } break;
     }
 
     ReadChar(Lexer);

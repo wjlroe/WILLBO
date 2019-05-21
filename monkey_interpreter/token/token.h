@@ -31,4 +31,16 @@ typedef struct {
     char* Literal;
 } Token;
 
+typedef struct {
+    char* Literal;
+    TokenType TokenType;
+} KeywordMapping;
+
+const KeywordMapping KEYWORDS[] = {
+    {"fn", TOKEN_FUNCTION},
+    {"let", TOKEN_LET},
+};
+
+TokenType LookupIdent(char* Ident);
+
 #endif
