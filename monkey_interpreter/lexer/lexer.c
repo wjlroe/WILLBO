@@ -74,20 +74,38 @@ Token NextToken(Lexer* Lexer) {
         case '=': {
             Token = NewToken(TOKEN_ASSIGN, "=");
         } break;
+        case '+': {
+            Token = NewToken(TOKEN_PLUS, "+");
+        } break;
+        case '-': {
+            Token = NewToken(TOKEN_MINUS, "-");
+        } break;
+        case '!': {
+            Token = NewToken(TOKEN_BANG, "!");
+        } break;
+        case '/': {
+            Token = NewToken(TOKEN_SLASH, "/");
+        } break;
+        case '*': {
+            Token = NewToken(TOKEN_ASTERISK, "*");
+        } break;
+        case '<': {
+            Token = NewToken(TOKEN_LT, "<");
+        } break;
+        case '>': {
+            Token = NewToken(TOKEN_GT, ">");
+        } break;
         case ';': {
             Token = NewToken(TOKEN_SEMICOLON, ";");
+        } break;
+        case ',': {
+            Token = NewToken(TOKEN_COMMA, ",");
         } break;
         case '(': {
             Token = NewToken(TOKEN_LPAREN, "(");
         } break;
         case ')': {
             Token = NewToken(TOKEN_RPAREN, ")");
-        } break;
-        case ',': {
-            Token = NewToken(TOKEN_COMMA, ",");
-        } break;
-        case '+': {
-            Token = NewToken(TOKEN_PLUS, "+");
         } break;
         case '{': {
             Token = NewToken(TOKEN_LBRACE, "{");

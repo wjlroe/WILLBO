@@ -11,7 +11,9 @@ test test_next_token(TestRun* test_run) {
         " x + y;\n"
         "};\n"
         "\n"
-        "let result = add(five, ten);\n";
+        "let result = add(five, ten);\n"
+        "!-/*5;\n"
+        "5 < 10 > 5;\n";
     Token expected[] = {
         {.TokenType = TOKEN_LET, "let"},
         {.TokenType = TOKEN_IDENT, "five"},
@@ -49,6 +51,18 @@ test test_next_token(TestRun* test_run) {
         {.TokenType = TOKEN_IDENT, "ten"},
         {.TokenType = TOKEN_RPAREN, ")"},
         {.TokenType = TOKEN_SEMICOLON, ";"},
+        {.TokenType = TOKEN_BANG, "!"},
+        {.TokenType = TOKEN_MINUS, "-"},
+        {.TokenType = TOKEN_SLASH, "/"},
+        {.TokenType = TOKEN_ASTERISK, "*"},
+        {.TokenType = TOKEN_INT, "5"},
+        {.TokenType = TOKEN_SEMICOLON, ";"},
+        {.TokenType = TOKEN_INT, "5"},
+        {.TokenType = TOKEN_LT, "<"},
+        {.TokenType = TOKEN_INT, "10"},
+        {.TokenType = TOKEN_GT, ">"},
+        {.TokenType = TOKEN_INT, "5"},
+        {.TokenType = TOKEN_SEMICOLON, ";"},
         {.TokenType = TOKEN_EOF, ""},
     };
     size_t expected_len = sizeof(expected) / sizeof(expected[0]);
@@ -58,14 +72,15 @@ test test_next_token(TestRun* test_run) {
     for (int i = 0; i < expected_len; i++) {
         Token token = NextToken(lexer);
 
-        mu_assert_equal(
-            token.TokenType,
-            expected[i].TokenType,
-            "[i=%d, ch='%c'] actual TokenType: %d does not equal expected: %d",
-            i,
-            input[i],
-            token.TokenType,
-            expected[i].TokenType);
+        mu_assert_equal(token.TokenType,
+                        expected[i].TokenType,
+                        "[i=%d] actual TokenType: %d (literal: '%s') does not "
+                        "equal expected: %d (literal: '%s')",
+                        i,
+                        token.TokenType,
+                        token.Literal,
+                        expected[i].TokenType,
+                        expected[i].Literal);
         mu_assert_str_equal(token.Literal, expected[i].Literal);
     }
 }
