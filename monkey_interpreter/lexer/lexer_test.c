@@ -13,7 +13,13 @@ test test_next_token(TestRun* test_run) {
         "\n"
         "let result = add(five, ten);\n"
         "!-/*5;\n"
-        "5 < 10 > 5;\n";
+        "5 < 10 > 5;\n"
+        "\n"
+        "if (5 < 10) {\n"
+        "  return true;\n"
+        "} else {\n"
+        "  return false;\n"
+        "}\n";
     Token expected[] = {
         {.TokenType = TOKEN_LET, "let"},
         {.TokenType = TOKEN_IDENT, "five"},
@@ -63,6 +69,23 @@ test test_next_token(TestRun* test_run) {
         {.TokenType = TOKEN_GT, ">"},
         {.TokenType = TOKEN_INT, "5"},
         {.TokenType = TOKEN_SEMICOLON, ";"},
+        {.TokenType = TOKEN_IF, "if"},
+        {.TokenType = TOKEN_LPAREN, "("},
+        {.TokenType = TOKEN_INT, "5"},
+        {.TokenType = TOKEN_LT, "<"},
+        {.TokenType = TOKEN_INT, "10"},
+        {.TokenType = TOKEN_RPAREN, ")"},
+        {.TokenType = TOKEN_LBRACE, "{"},
+        {.TokenType = TOKEN_RETURN, "return"},
+        {.TokenType = TOKEN_TRUE, "true"},
+        {.TokenType = TOKEN_SEMICOLON, ";"},
+        {.TokenType = TOKEN_RBRACE, "}"},
+        {.TokenType = TOKEN_ELSE, "else"},
+        {.TokenType = TOKEN_LBRACE, "{"},
+        {.TokenType = TOKEN_RETURN, "return"},
+        {.TokenType = TOKEN_FALSE, "false"},
+        {.TokenType = TOKEN_SEMICOLON, ";"},
+        {.TokenType = TOKEN_RBRACE, "}"},
         {.TokenType = TOKEN_EOF, ""},
     };
     size_t expected_len = sizeof(expected) / sizeof(expected[0]);

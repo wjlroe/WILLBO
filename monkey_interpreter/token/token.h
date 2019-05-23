@@ -30,6 +30,11 @@ typedef enum {
     // Keywords
     TOKEN_FUNCTION,
     TOKEN_LET,
+    TOKEN_TRUE,
+    TOKEN_FALSE,
+    TOKEN_IF,
+    TOKEN_ELSE,
+    TOKEN_RETURN,
 } TokenType;
 
 typedef struct {
@@ -45,6 +50,11 @@ typedef struct {
 const KeywordMapping KEYWORDS[] = {
     {"fn", TOKEN_FUNCTION},
     {"let", TOKEN_LET},
+    {"true", TOKEN_TRUE},
+    {"false", TOKEN_FALSE},
+    {"if", TOKEN_IF},
+    {"else", TOKEN_ELSE},
+    {"return", TOKEN_RETURN},
 };
 
 TokenType LookupIdent(char* Ident);
