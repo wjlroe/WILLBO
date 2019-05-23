@@ -19,7 +19,10 @@ test test_next_token(TestRun* test_run) {
         "  return true;\n"
         "} else {\n"
         "  return false;\n"
-        "}\n";
+        "}\n"
+        "\n"
+        "10 == 10;\n"
+        "10 != 9;\n";
     Token expected[] = {
         {.TokenType = TOKEN_LET, "let"},
         {.TokenType = TOKEN_IDENT, "five"},
@@ -86,6 +89,14 @@ test test_next_token(TestRun* test_run) {
         {.TokenType = TOKEN_FALSE, "false"},
         {.TokenType = TOKEN_SEMICOLON, ";"},
         {.TokenType = TOKEN_RBRACE, "}"},
+        {.TokenType = TOKEN_INT, "10"},
+        {.TokenType = TOKEN_EQ, "=="},
+        {.TokenType = TOKEN_INT, "10"},
+        {.TokenType = TOKEN_SEMICOLON, ";"},
+        {.TokenType = TOKEN_INT, "10"},
+        {.TokenType = TOKEN_NOT_EQ, "!="},
+        {.TokenType = TOKEN_INT, "9"},
+        {.TokenType = TOKEN_SEMICOLON, ";"},
         {.TokenType = TOKEN_EOF, ""},
     };
     size_t expected_len = sizeof(expected) / sizeof(expected[0]);

@@ -12,6 +12,14 @@ void ReadChar(Lexer* Lexer) {
     Lexer->ReadPosition++;
 }
 
+char PeekChar(Lexer* Lexer) {
+    if (Lexer->ReadPosition >= strlen(Lexer->Input)) {
+        return 0;
+    } else {
+        return Lexer->Input[Lexer->ReadPosition];
+    }
+}
+
 void InitLexer(Lexer* Lexer, const char* Input) {
     size_t InputLen = strlen(Input);
     size_t InputSizeWithNull = InputLen + 1;
@@ -72,7 +80,15 @@ Token NextToken(Lexer* Lexer) {
 
     switch (Lexer->CurrentChar) {
         case '=': {
-            Token = NewToken(TOKEN_ASSIGN, "=");
+            if (PeekChar(Lexer) == '=') {
+                char Literal[3] = "\0";
+                Literal[0] = Lexer->CurrentChar;
+                ReadChar(Lexer);
+                Literal[1] = Lexer->CurrentChar;
+                Token = NewToken(TOKEN_EQ, Literal);
+            } else {
+                Token = NewToken(TOKEN_ASSIGN, "=");
+            }
         } break;
         case '+': {
             Token = NewToken(TOKEN_PLUS, "+");
@@ -81,7 +97,15 @@ Token NextToken(Lexer* Lexer) {
             Token = NewToken(TOKEN_MINUS, "-");
         } break;
         case '!': {
-            Token = NewToken(TOKEN_BANG, "!");
+            if (PeekChar(Lexer) == '=') {
+                char Literal[3] = "\0";
+                Literal[0] = Lexer->CurrentChar;
+                ReadChar(Lexer);
+                Literal[1] = Lexer->CurrentChar;
+                Token = NewToken(TOKEN_NOT_EQ, Literal);
+            } else {
+                Token = NewToken(TOKEN_BANG, "!");
+            }
         } break;
         case '/': {
             Token = NewToken(TOKEN_SLASH, "/");

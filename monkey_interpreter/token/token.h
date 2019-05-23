@@ -17,6 +17,8 @@ typedef enum {
     TOKEN_SLASH,
     TOKEN_LT,
     TOKEN_GT,
+    TOKEN_EQ,
+    TOKEN_NOT_EQ,
 
     // Delimiters
     TOKEN_COMMA,
