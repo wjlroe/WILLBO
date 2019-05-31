@@ -23,6 +23,26 @@
                                         "ignoreFailures": true
                                 }
                         ]
+                },
+                {
+                        "name": "Debug repl",
+                        "type": "cppdbg",
+                        "request": "launch",
+                        "program": "${workspaceRoot}/main.exe",
+                        "args": [],
+                        "cwd": "${workspaceRoot}",
+                        "environment": [],
+                        "externalConsole": true,
+                        "stopAtEntry": false,
+                        "MIMode": "gdb",
+                        "preLaunchTask": "build repl",
+                        "setupCommands": [
+                                {
+                                        "description": "Enable pretty-printing for gdb",
+                                        "text": "-enable-pretty-printing",
+                                        "ignoreFailures": true
+                                }
+                        ]
                 }
         ]
 }

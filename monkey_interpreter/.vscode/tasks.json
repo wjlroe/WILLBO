@@ -20,6 +20,12 @@
                         },
                         "type": "shell",
                         "command": "make tests"
+                },
+                {
+                        "label": "build repl",
+                        "group": "build",
+                        "type": "shell",
+                        "command": "make main.exe"
                 }
         ]
 }

@@ -49,7 +49,7 @@ typedef struct {
     TokenType TokenType;
 } KeywordMapping;
 
-const KeywordMapping KEYWORDS[] = {
+static const KeywordMapping KEYWORDS[] = {
     {"fn", TOKEN_FUNCTION},
     {"let", TOKEN_LET},
     {"true", TOKEN_TRUE},
