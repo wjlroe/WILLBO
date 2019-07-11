@@ -21,6 +21,7 @@ char PeekChar(Lexer* Lexer) {
 }
 
 void InitLexer(Lexer* Lexer, const char* Input) {
+    Lexer->ReadPosition = 0;
     size_t InputLen = strlen(Input);
     size_t InputSizeWithNull = InputLen + 1;
     Lexer->Input = malloc(InputSizeWithNull);
