@@ -59,6 +59,7 @@ static const KeywordMapping KEYWORDS[] = {
     {"return", TOKEN_RETURN},
 };
 
-TokenType LookupIdent(char* Ident);
+const KeywordMapping* LookupKeyword(char* Ident);
+void FreeToken(Token Token);
 
 #endif

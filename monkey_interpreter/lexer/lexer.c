@@ -82,18 +82,15 @@ void SkipWhitespace(Lexer* Lexer) {
 }
 
 Token NextToken(Lexer* Lexer) {
-    Token Token;
+    Token Token = NewToken(TOKEN_ILLEGAL, "");
 
     SkipWhitespace(Lexer);
 
     switch (Lexer->CurrentChar) {
         case '=': {
             if (PeekChar(Lexer) == '=') {
-                char Literal[3] = "\0";
-                Literal[0] = Lexer->CurrentChar;
                 ReadChar(Lexer);
-                Literal[1] = Lexer->CurrentChar;
-                Token = NewToken(TOKEN_EQ, Literal);
+                Token = NewToken(TOKEN_EQ, "==");
             } else {
                 Token = NewToken(TOKEN_ASSIGN, "=");
             }
@@ -106,11 +103,8 @@ Token NextToken(Lexer* Lexer) {
         } break;
         case '!': {
             if (PeekChar(Lexer) == '=') {
-                char Literal[3] = "\0";
-                Literal[0] = Lexer->CurrentChar;
                 ReadChar(Lexer);
-                Literal[1] = Lexer->CurrentChar;
-                Token = NewToken(TOKEN_NOT_EQ, Literal);
+                Token = NewToken(TOKEN_NOT_EQ, "!=");
             } else {
                 Token = NewToken(TOKEN_BANG, "!");
             }
@@ -151,8 +145,16 @@ Token NextToken(Lexer* Lexer) {
         } break;
         default: {
             if (IsLetter(Lexer->CurrentChar)) {
-                Token.Literal = ReadIdentifier(Lexer);
-                Token.TokenType = LookupIdent(Token.Literal);
+                char* Identifier = ReadIdentifier(Lexer);
+                const KeywordMapping* Mapping = LookupKeyword(Identifier);
+                if (Mapping != NULL) {
+                    Token.TokenType = Mapping->TokenType;
+                    Token.Literal = Mapping->Literal;
+                    free(Identifier);
+                } else {
+                    Token.TokenType = TOKEN_IDENT;
+                    Token.Literal = Identifier;
+                }
                 return Token;
             } else if (isdigit(Lexer->CurrentChar)) {
                 Token.TokenType = TOKEN_INT;

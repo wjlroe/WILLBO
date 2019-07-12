@@ -116,6 +116,7 @@ test test_next_token(TestRun* test_run) {
                         expected[i].TokenType,
                         expected[i].Literal);
         mu_assert_str_equal(token.Literal, expected[i].Literal);
+        FreeToken(token);
     }
     FreeLexer(lexer);
 }
