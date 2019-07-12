@@ -9,16 +9,19 @@ void StartRepl() {
     while (1) {
         printf(PROMPT);
 
-        Lexer* Lexer = malloc(sizeof(Lexer));
         if (fgets(Input, REPL_BUFFER_SIZE, stdin) == NULL) {
             break;
         }
+
+        Lexer* Lexer = malloc(sizeof(*Lexer));
         InitLexer(Lexer, Input);
 
         Token Token = NextToken(Lexer);
         while (Token.TokenType != TOKEN_EOF) {
             printf("%s\n", Token.Literal);
+            FreeToken(Token);
             Token = NextToken(Lexer);
         }
+        FreeToken(Token);
     }
 }
