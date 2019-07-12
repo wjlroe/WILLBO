@@ -100,7 +100,7 @@ test test_next_token(TestRun* test_run) {
         {.TokenType = TOKEN_EOF, ""},
     };
     size_t expected_len = sizeof(expected) / sizeof(expected[0]);
-    Lexer* lexer = malloc(sizeof(Lexer));
+    Lexer* lexer = malloc(sizeof(*lexer));
     InitLexer(lexer, input);
     mu_assert_str_equal(lexer->Input, input);
     for (int i = 0; i < expected_len; i++) {
