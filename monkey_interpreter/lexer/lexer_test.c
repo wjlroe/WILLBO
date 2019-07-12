@@ -117,4 +117,5 @@ test test_next_token(TestRun* test_run) {
                         expected[i].Literal);
         mu_assert_str_equal(token.Literal, expected[i].Literal);
     }
+    FreeLexer(lexer);
 }

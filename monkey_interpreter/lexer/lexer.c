@@ -35,6 +35,11 @@ void InitLexer(Lexer* Lexer, const char* Input) {
     ReadChar(Lexer);
 }
 
+void FreeLexer(Lexer* Lexer) {
+    free(Lexer->Input);
+    free(Lexer);
+}
+
 Token NewToken(TokenType Type, char* Literal) {
     return (Token){.TokenType = Type, .Literal = Literal};
 }
