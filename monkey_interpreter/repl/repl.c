@@ -8,9 +8,11 @@ void StartRepl() {
     char Input[REPL_BUFFER_SIZE] = "\0";
     while (1) {
         printf(PROMPT);
-        fgets(Input, REPL_BUFFER_SIZE, stdin);
 
         Lexer* Lexer = malloc(sizeof(Lexer));
+        if (fgets(Input, REPL_BUFFER_SIZE, stdin) == NULL) {
+            break;
+        }
         InitLexer(Lexer, Input);
 
         Token Token = NextToken(Lexer);
