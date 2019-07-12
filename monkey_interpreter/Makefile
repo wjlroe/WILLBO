@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -g -O0 -Wall -Werror -std=c99
+CFLAGS = -g -Og -Wall -Werror -std=c99 -fstack-protector-strong
 DEPS = token/token.h lexer/lexer.h repl/repl.h
 OBJ = token/token.o lexer/lexer.o repl/repl.o
 TEST_FILES = $(DEPS) $(OBJ) ../minunit.h ../dbg.h tests.c lexer/lexer_test.c
