@@ -30,7 +30,7 @@ void InitLexer(Lexer* Lexer, const char* Input) {
         exit(1);
     }
     strncpy(Lexer->Input, Input, InputLen);
-    Lexer->Input[InputLen + 1] = '\0';
+    Lexer->Input[InputLen] = '\0';
 
     ReadChar(Lexer);
 }
@@ -52,6 +52,7 @@ char* ReadIdentifier(Lexer* Lexer) {
     char* Result = malloc(SubStringSize + 1);  // plus null terminator
     char* FromInput = Lexer->Input + Position;
     memcpy(Result, FromInput, SubStringSize);
+    Result[SubStringSize] = '\0';
     return Result;
 }
 
@@ -64,6 +65,7 @@ char* ReadNumber(Lexer* Lexer) {
     char* Result = malloc(SubStringSize + 1);  // plus null terminator
     char* FromInput = Lexer->Input + Position;
     memcpy(Result, FromInput, SubStringSize);
+    Result[SubStringSize] = '\0';
     return Result;
 }
 
