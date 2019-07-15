@@ -59,6 +59,8 @@ func (l *Lexer) NextToken() token.Token {
 		tok.Literal = l.readString()
 	case '+':
 		tok = newToken(token.Plus, l.ch)
+	case '/':
+		tok = newToken(token.Slash, l.ch)
 	case '-':
 		tok = newToken(token.Minus, l.ch)
 	case ';':
@@ -69,6 +71,34 @@ func (l *Lexer) NextToken() token.Token {
 		tok = newToken(token.Gt, l.ch)
 	case '*':
 		tok = newToken(token.Asterisk, l.ch)
+	case '{':
+		tok = newToken(token.LBrace, l.ch)
+	case '}':
+		tok = newToken(token.RBrace, l.ch)
+	case ':':
+		tok = newToken(token.Colon, l.ch)
+	case ',':
+		tok = newToken(token.Comma, l.ch)
+	case '[':
+		tok = newToken(token.LBracket, l.ch)
+	case ']':
+		tok = newToken(token.RBracket, l.ch)
+	case '(':
+		tok = newToken(token.LParen, l.ch)
+	case ')':
+		tok = newToken(token.RParen, l.ch)
+	case '|':
+		if l.peekChar() == '|' {
+			ch := l.ch
+			l.readChar()
+			literal := string(ch) + string(l.ch)
+			tok = token.Token{Type: token.Or, Literal: literal}
+		} else {
+			tok = newToken(token.Bar, l.ch)
+		}
+	case 0:
+		tok.Literal = ""
+		tok.Type = token.EOF
 	default:
 		if isLetter(l.ch) {
 			tok.Literal = l.readIdentifier()
@@ -95,7 +125,7 @@ func (l *Lexer) skipWhitespace() {
 
 func (l *Lexer) readIdentifier() string {
 	position := l.position
-	for isLetter(l.ch) {
+	for isLetter(l.ch) || isDigit(l.ch) {
 		l.readChar()
 	}
 	return l.input[position:l.position]

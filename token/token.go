@@ -21,6 +21,8 @@ const (
 	Minus    = "-"
 	Asterisk = "*"
 	Bang     = "!"
+	Slash    = "/"
+	Or       = "||"
 
 	Gt = ">"
 	Lt = "<"
@@ -31,6 +33,16 @@ const (
 	// Delimiters
 
 	Semicolon = ";"
+	Colon     = ":"
+	Comma     = ","
+	Bar       = "|"
+
+	LBrace   = "{"
+	RBrace   = "}"
+	LBracket = "["
+	RBracket = "]"
+	LParen   = "("
+	RParen   = ")"
 
 	Reserved = "RESERVED"
 )
@@ -42,8 +54,20 @@ type Token struct {
 }
 
 var reservedWords = map[string]bool{
-	"int":    true,
+	"i32":    true,
+	"bool":   true,
 	"string": true,
+	"struct": true,
+	"pub":    true,
+	"fn":     true,
+	"for":    true,
+	"in":     true,
+	"let":    true,
+	"false":  true,
+	"true":   true,
+	"if":     true,
+	"else":   true,
+	"return": true,
 }
 
 // IdentifierType checks if an identifier is a reserved word or not
