@@ -3,11 +3,13 @@
 #include <stdbool.h>
 
 void ReadChar(Lexer* Lexer) {
+    // printf("(before readchar) Lexer->CurrentChar: %c\n", Lexer->CurrentChar);
     if (Lexer->ReadPosition >= strlen(Lexer->Input)) {
         Lexer->CurrentChar = 0;
     } else {
         Lexer->CurrentChar = Lexer->Input[Lexer->ReadPosition];
     }
+    // printf("(after readchar) Lexer->CurrentChar: %c\n", Lexer->CurrentChar);
     Lexer->Position = Lexer->ReadPosition;
     Lexer->ReadPosition++;
 }
@@ -54,7 +56,8 @@ char* ReadIdentifier(Lexer* Lexer) {
         ReadChar(Lexer);
     }
     int SubStringSize = Lexer->Position - Position;
-    char* Result = malloc(SubStringSize + 1);  // plus null terminator
+    char* Result =
+        malloc((SubStringSize + 1) * sizeof(char));  // plus null terminator
     char* FromInput = Lexer->Input + Position;
     memcpy(Result, FromInput, SubStringSize);
     Result[SubStringSize] = '\0';

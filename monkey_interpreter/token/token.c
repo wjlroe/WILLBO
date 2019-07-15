@@ -24,3 +24,10 @@ void FreeToken(Token Token) {
             break;
     }
 }
+
+Token ZeroToken() {
+    Token Token = {};
+    Token.Literal = "";
+    Token.TokenType = TOKEN_ILLEGAL;
+    return Token;
+}

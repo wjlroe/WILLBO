@@ -6,7 +6,7 @@
 #ifndef LEXER_H
 #define LEXER_H
 
-typedef struct {
+typedef struct Lexer {
     char* Input;
     int Position;      // current position in input (points to current char)
     int ReadPosition;  // current reading position in input (after current char)

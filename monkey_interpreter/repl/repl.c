@@ -13,7 +13,7 @@ void StartRepl() {
             break;
         }
 
-        Lexer* Lexer = malloc(sizeof(*Lexer));
+        Lexer* Lexer = malloc(sizeof(struct Lexer));
         InitLexer(Lexer, Input);
 
         Token Token = NextToken(Lexer);

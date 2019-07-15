@@ -39,12 +39,12 @@ typedef enum {
     TOKEN_RETURN,
 } TokenType;
 
-typedef struct {
+typedef struct Token {
     TokenType TokenType;
     char* Literal;
 } Token;
 
-typedef struct {
+typedef struct KeywordMapping {
     char* Literal;
     TokenType TokenType;
 } KeywordMapping;
@@ -61,5 +61,6 @@ static const KeywordMapping KEYWORDS[] = {
 
 const KeywordMapping* LookupKeyword(char* Ident);
 void FreeToken(Token Token);
+Token ZeroToken();
 
 #endif
