@@ -16,11 +16,13 @@ const (
 	PLUS     = "+"
 	MINUS    = "-"
 	ASTERISK = "*"
+	BANG     = "!"
 
 	GT = ">"
 	LT = "<"
 
-	EQ = "=="
+	EQ     = "=="
+	NOT_EQ = "!="
 
 	// Delimiters
 	SEMICOLON = ";"

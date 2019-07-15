@@ -9,7 +9,7 @@ import (
 func TestNextToken(t *testing.T) {
 	input := `int intj = 4 + 2 - 3;
 
-	5 < 10 * 2 > 5;
+	5 < 10 * 2 > 5 != 200;
 
 	string this_is_a_string = "foobar";`
 
@@ -33,6 +33,8 @@ func TestNextToken(t *testing.T) {
 		{token.NUMBER, "2"},
 		{token.GT, ">"},
 		{token.NUMBER, "5"},
+		{token.NOT_EQ, "!="},
+		{token.NUMBER, "200"},
 		{token.SEMICOLON, ";"},
 		{token.RESERVED, "string"},
 		{token.IDENT, "this_is_a_string"},
