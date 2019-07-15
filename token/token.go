@@ -1,7 +1,7 @@
 package token
 
-// TokenType is a type marker for tokens
-type TokenType string
+// Type is a type marker for tokens
+type Type string
 
 // Token types
 const (
@@ -37,7 +37,7 @@ const (
 
 // Token represents a single token from the lexer
 type Token struct {
-	Type    TokenType
+	Type    Type
 	Literal string
 }
 
@@ -47,7 +47,7 @@ var reservedWords = map[string]bool{
 }
 
 // IdentifierType checks if an identifier is a reserved word or not
-func IdentifierType(ident string) TokenType {
+func IdentifierType(ident string) Type {
 	if isReserved(ident) {
 		return Reserved
 	}

@@ -14,7 +14,7 @@ func TestNextToken(t *testing.T) {
 	string this_is_a_string = "foobar";`
 
 	tests := []struct {
-		expectedType    token.TokenType
+		expectedType    token.Type
 		expectedLiteral string
 	}{
 		{token.Reserved, "int"},
