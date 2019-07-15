@@ -12,9 +12,10 @@ const (
 	STRING = "STRING"
 
 	// Operators
-	ASSIGN = "="
-	PLUS   = "+"
-	MINUS  = "-"
+	ASSIGN   = "="
+	PLUS     = "+"
+	MINUS    = "-"
+	ASTERISK = "*"
 
 	GT = ">"
 	LT = "<"
