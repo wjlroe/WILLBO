@@ -54,6 +54,9 @@
               actual,                         \
               expected);
 
+#define mu_assert_size_equal(actual, expected) \
+    mu_assert_int_equal((int)actual, (int)expected);
+
 #define mu_run_test(test)             \
     printf("\n-----%s\n", " " #test); \
     test(test_run);                   \
