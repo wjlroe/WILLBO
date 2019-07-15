@@ -9,7 +9,9 @@ import (
 func TestNextToken(t *testing.T) {
 	input := `int intj = 4 + 2 - 3;
 
-	5 < 10 > 5;`
+	5 < 10 > 5;
+
+	string this_is_a_string = "foobar";`
 
 	tests := []struct {
 		expectedType    token.TokenType
@@ -30,6 +32,10 @@ func TestNextToken(t *testing.T) {
 		{token.GT, ">"},
 		{token.NUMBER, "5"},
 		{token.SEMICOLON, ";"},
+		{token.RESERVED, "string"},
+		{token.IDENT, "this_is_a_string"},
+		{token.ASSIGN, "="},
+		{token.STRING, "foobar"},
 	}
 
 	l := NewLexer(input)

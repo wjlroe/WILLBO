@@ -1,9 +1,5 @@
 package token
 
-import (
-	"sort"
-)
-
 type TokenType string
 
 const (
@@ -36,19 +32,22 @@ type Token struct {
 	Literal string
 }
 
-var reservedWords = []string{
-	"int",
-}
-
-func init() {
-	sort.Strings(reservedWords)
+var reservedWords = map[string]bool{
+	"int":    true,
+	"string": true,
 }
 
 // IdentifierType checks if an identifier is a reserved word or not
 func IdentifierType(ident string) TokenType {
-	if sort.SearchStrings(reservedWords, ident) < len(reservedWords) {
+	if isReserved(ident) {
 		return RESERVED
-	} else {
-		return IDENT
 	}
+	return IDENT
+}
+
+func isReserved(word string) bool {
+	if _, ok := reservedWords[word]; ok {
+		return true
+	}
+	return false
 }
