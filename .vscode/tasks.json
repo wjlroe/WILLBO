@@ -6,7 +6,20 @@
     {
       "label": "build",
       "type": "shell",
-      "command": "./scripts/build.sh"
+      "command": "go build",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "test",
+      "type": "shell",
+      "command": "go test ./...",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      }
     }
   ]
 }
