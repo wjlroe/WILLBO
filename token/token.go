@@ -1,5 +1,6 @@
 package token
 
+// TokenType is a type marker for tokens
 type TokenType string
 
 const (
@@ -7,11 +8,13 @@ const (
 	EOF     = "EOF"
 
 	// Identifiers and literals
+
 	IDENT  = "IDENT"
 	NUMBER = "NUMBER"
 	STRING = "STRING"
 
 	// Operators
+
 	ASSIGN   = "="
 	PLUS     = "+"
 	MINUS    = "-"
@@ -25,11 +28,13 @@ const (
 	NOT_EQ = "!="
 
 	// Delimiters
+
 	SEMICOLON = ";"
 
 	RESERVED = "RESERVED"
 )
 
+// Token represents a single token from the lexer
 type Token struct {
 	Type    TokenType
 	Literal string
