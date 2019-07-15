@@ -41,45 +41,45 @@ func (l *Lexer) NextToken() token.Token {
 			ch := l.ch
 			l.readChar()
 			literal := string(ch) + string(l.ch)
-			tok = token.Token{Type: token.EQ, Literal: literal}
+			tok = token.Token{Type: token.Eq, Literal: literal}
 		} else {
-			tok = newToken(token.ASSIGN, l.ch)
+			tok = newToken(token.Assign, l.ch)
 		}
 	case '!':
 		if l.peekChar() == '=' {
 			ch := l.ch
 			l.readChar()
 			literal := string(ch) + string(l.ch)
-			tok = token.Token{Type: token.NOT_EQ, Literal: literal}
+			tok = token.Token{Type: token.NotEq, Literal: literal}
 		} else {
-			tok = newToken(token.BANG, l.ch)
+			tok = newToken(token.Bang, l.ch)
 		}
 	case '"':
-		tok.Type = token.STRING
+		tok.Type = token.String
 		tok.Literal = l.readString()
 	case '+':
-		tok = newToken(token.PLUS, l.ch)
+		tok = newToken(token.Plus, l.ch)
 	case '-':
-		tok = newToken(token.MINUS, l.ch)
+		tok = newToken(token.Minus, l.ch)
 	case ';':
-		tok = newToken(token.SEMICOLON, l.ch)
+		tok = newToken(token.Semicolon, l.ch)
 	case '<':
-		tok = newToken(token.LT, l.ch)
+		tok = newToken(token.Lt, l.ch)
 	case '>':
-		tok = newToken(token.GT, l.ch)
+		tok = newToken(token.Gt, l.ch)
 	case '*':
-		tok = newToken(token.ASTERISK, l.ch)
+		tok = newToken(token.Asterisk, l.ch)
 	default:
 		if isLetter(l.ch) {
 			tok.Literal = l.readIdentifier()
 			tok.Type = token.IdentifierType(tok.Literal)
 			return tok
 		} else if isDigit(l.ch) {
-			tok.Type = token.NUMBER
+			tok.Type = token.Number
 			tok.Literal = l.readNumber()
 			return tok
 		} else {
-			tok = newToken(token.ILLEGAL, l.ch)
+			tok = newToken(token.Illegal, l.ch)
 		}
 	}
 

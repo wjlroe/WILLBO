@@ -3,35 +3,36 @@ package token
 // TokenType is a type marker for tokens
 type TokenType string
 
+// Token types
 const (
-	ILLEGAL = "ILLEGAL"
+	Illegal = "ILLEGAL"
 	EOF     = "EOF"
 
 	// Identifiers and literals
 
-	IDENT  = "IDENT"
-	NUMBER = "NUMBER"
-	STRING = "STRING"
+	Ident  = "IDENT"
+	Number = "NUMBER"
+	String = "STRING"
 
 	// Operators
 
-	ASSIGN   = "="
-	PLUS     = "+"
-	MINUS    = "-"
-	ASTERISK = "*"
-	BANG     = "!"
+	Assign   = "="
+	Plus     = "+"
+	Minus    = "-"
+	Asterisk = "*"
+	Bang     = "!"
 
-	GT = ">"
-	LT = "<"
+	Gt = ">"
+	Lt = "<"
 
-	EQ     = "=="
-	NOT_EQ = "!="
+	Eq    = "=="
+	NotEq = "!="
 
 	// Delimiters
 
-	SEMICOLON = ";"
+	Semicolon = ";"
 
-	RESERVED = "RESERVED"
+	Reserved = "RESERVED"
 )
 
 // Token represents a single token from the lexer
@@ -48,9 +49,9 @@ var reservedWords = map[string]bool{
 // IdentifierType checks if an identifier is a reserved word or not
 func IdentifierType(ident string) TokenType {
 	if isReserved(ident) {
-		return RESERVED
+		return Reserved
 	}
-	return IDENT
+	return Ident
 }
 
 func isReserved(word string) bool {
