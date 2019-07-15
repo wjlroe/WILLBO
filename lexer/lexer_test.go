@@ -7,7 +7,9 @@ import (
 )
 
 func TestNextToken(t *testing.T) {
-	input := `int intj = 4 + 2;`
+	input := `int intj = 4 + 2 - 3;
+
+	5 < 10 > 5;`
 
 	tests := []struct {
 		expectedType    token.TokenType
@@ -19,6 +21,14 @@ func TestNextToken(t *testing.T) {
 		{token.NUMBER, "4"},
 		{token.PLUS, "+"},
 		{token.NUMBER, "2"},
+		{token.MINUS, "-"},
+		{token.NUMBER, "3"},
+		{token.SEMICOLON, ";"},
+		{token.NUMBER, "5"},
+		{token.LT, "<"},
+		{token.NUMBER, "10"},
+		{token.GT, ">"},
+		{token.NUMBER, "5"},
 		{token.SEMICOLON, ";"},
 	}
 

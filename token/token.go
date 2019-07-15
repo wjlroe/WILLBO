@@ -18,6 +18,10 @@ const (
 	// Operators
 	ASSIGN = "="
 	PLUS   = "+"
+	MINUS  = "-"
+
+	GT = ">"
+	LT = "<"
 
 	EQ = "=="
 
