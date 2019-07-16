@@ -13,5 +13,5 @@ lint:
 	@golint ./...
 
 build:
-	@go build
+	@go build ./...
 
