@@ -5,6 +5,8 @@ env:
 
 before_script:
   - pushd .. ; go get golang.org/x/lint/golint ; popd
+  - curl https://pre-commit.com/install-local.py | python -
+  - pre-commit run --all-files
 
 go:
   - stable
