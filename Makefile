@@ -14,4 +14,3 @@ lint:
 
 build:
 	@go build ./...
-

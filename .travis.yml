@@ -5,6 +5,14 @@ env:
 
 before_script:
   - pushd .. ; go get golang.org/x/lint/golint ; popd
+  - pip install --user pre-commit
+  - pre-commit run --all-files
 
 go:
   - stable
+
+cache:
+  pip: true
+  directories:
+    - /home/travis/.cache/pre-commit
+    - /home/travis/gopath/src
