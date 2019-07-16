@@ -1,4 +1,10 @@
 language: go
 
+env:
+  - GO111MODULE=on
+
+before_script:
+  - pushd .. ; go get golang.org/x/lint/golint ; popd
+
 go:
-- stable
+  - stable
