@@ -10,3 +10,7 @@ before_script:
 
 go:
   - stable
+
+cache:
+  directories:
+    - /home/travis/.cache/pre-commit
