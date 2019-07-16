@@ -12,3 +12,4 @@ repos:
       rev: v0.0.16
       hooks:
           - id: go-fmt
+            types: [go]
