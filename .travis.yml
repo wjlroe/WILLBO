@@ -15,3 +15,5 @@ cache:
   directories:
     - /home/travis/.cache/pre-commit
     - /home/travis/gopath/src
+    - /home/travis/.pre-commit-venv
+    - /home/travis/bin
