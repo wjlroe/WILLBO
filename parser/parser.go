@@ -206,7 +206,7 @@ func (p *Parser) parseNumberLiteral() ast.Expression {
 	value, err := strconv.ParseInt(p.curToken.Literal, 0, 32)
 	if err != nil {
 		msg := errors.Errorf("could not parse %q as integer", p.curToken.Literal)
-		p.errors = append(p.errors, msg)
+		p.addError(msg)
 		return nil
 	}
 
@@ -241,7 +241,7 @@ func (p *Parser) parseReserved() ast.Expression {
 		return p.parseIfExpression()
 	}
 	msg := errors.Errorf("unknown reserved word: %q", p.curToken.Literal)
-	p.errors = append(p.errors, msg)
+	p.addError(msg)
 	return nil
 }
 
@@ -507,13 +507,13 @@ func (p *Parser) addError(err error) {
 func (p *Parser) peekErrorType(t token.Type) {
 	msg := errors.Errorf("expected next token to be '%s', got '%s' (literal: '%s') instead",
 		t, p.peekToken.Type, p.peekToken.Literal)
-	p.errors = append(p.errors, msg)
+	p.addError(msg)
 }
 
 func (p *Parser) peekErrorLiteral(l string) {
 	msg := errors.Errorf("expected next token literal to be '%s', got '%s' instead",
 		l, p.peekToken.Literal)
-	p.errors = append(p.errors, msg)
+	p.addError(msg)
 }
 
 func (p *Parser) noPrefixParseFnError(t token.Type) error {
