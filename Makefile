@@ -1,4 +1,4 @@
-all: fmt test vet lint
+all: fmt test vet lint build
 
 fmt:
 	@gofmt -w .
