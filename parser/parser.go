@@ -1,9 +1,9 @@
 package parser
 
 import (
-	"fmt"
 	"strconv"
 
+	"github.com/pkg/errors"
 	"github.com/wjlroe/WILLBO/ast"
 	"github.com/wjlroe/WILLBO/lexer"
 	"github.com/wjlroe/WILLBO/token"
@@ -46,7 +46,7 @@ type Parser struct {
 	curToken  token.Token
 	peekToken token.Token
 
-	errors []string
+	errors []error
 
 	prefixParseFns map[token.Type]prefixParseFn
 	infixParseFns  map[token.Type]infixParseFn
@@ -56,7 +56,7 @@ type Parser struct {
 func New(l *lexer.Lexer) *Parser {
 	p := &Parser{
 		l:      l,
-		errors: []string{},
+		errors: []error{},
 	}
 
 	p.prefixParseFns = make(map[token.Type]prefixParseFn)
@@ -176,7 +176,8 @@ func (p *Parser) parseExpressionStatement() *ast.ExpressionStatement {
 func (p *Parser) parseExpression(precedence int) ast.Expression {
 	prefix := p.prefixParseFns[p.curToken.Type]
 	if prefix == nil {
-		p.noPrefixParseFnError(p.curToken.Type)
+		prefixError := p.noPrefixParseFnError(p.curToken.Type)
+		p.addError(prefixError)
 		return nil
 	}
 	leftExp := prefix()
@@ -204,8 +205,8 @@ func (p *Parser) parseNumberLiteral() ast.Expression {
 
 	value, err := strconv.ParseInt(p.curToken.Literal, 0, 32)
 	if err != nil {
-		msg := fmt.Sprintf("could not parse %q as integer", p.curToken.Literal)
-		p.errors = append(p.errors, msg)
+		msg := errors.Errorf("could not parse %q as integer", p.curToken.Literal)
+		p.addError(msg)
 		return nil
 	}
 
@@ -239,8 +240,8 @@ func (p *Parser) parseReserved() ast.Expression {
 	case "if":
 		return p.parseIfExpression()
 	}
-	msg := fmt.Sprintf("unknown reserved word: %q", p.curToken.Literal)
-	p.errors = append(p.errors, msg)
+	msg := errors.Errorf("unknown reserved word: %q", p.curToken.Literal)
+	p.addError(msg)
 	return nil
 }
 
@@ -499,24 +500,27 @@ func (p *Parser) peekPrecedence() int {
 
 // Errors helper functions
 
+func (p *Parser) addError(err error) {
+	p.errors = append(p.errors, err)
+}
+
 func (p *Parser) peekErrorType(t token.Type) {
-	msg := fmt.Sprintf("expected next token to be '%s', got '%s' (literal: '%s') instead",
+	msg := errors.Errorf("expected next token to be '%s', got '%s' (literal: '%s') instead",
 		t, p.peekToken.Type, p.peekToken.Literal)
-	p.errors = append(p.errors, msg)
+	p.addError(msg)
 }
 
 func (p *Parser) peekErrorLiteral(l string) {
-	msg := fmt.Sprintf("expected next token literal to be '%s', got '%s' instead",
+	msg := errors.Errorf("expected next token literal to be '%s', got '%s' instead",
 		l, p.peekToken.Literal)
-	p.errors = append(p.errors, msg)
+	p.addError(msg)
 }
 
-func (p *Parser) noPrefixParseFnError(t token.Type) {
-	msg := fmt.Sprintf("no prefix parse function for '%s' found", t)
-	p.errors = append(p.errors, msg)
+func (p *Parser) noPrefixParseFnError(t token.Type) error {
+	return errors.Errorf("no prefix parse function for '%s' found", t)
 }
 
 // Errors provides all the parsing errors that occured during parsing
-func (p *Parser) Errors() []string {
+func (p *Parser) Errors() []error {
 	return p.errors
 }
