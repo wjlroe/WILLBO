@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/pkg/errors"
 	"github.com/wjlroe/WILLBO/ast"
 	"github.com/wjlroe/WILLBO/lexer"
 )
@@ -885,6 +886,10 @@ func testBooleanLiteral(t *testing.T, exp ast.Expression, value bool) bool {
 	return true
 }
 
+type stackTracer interface {
+	StackTrace() errors.StackTrace
+}
+
 func checkParserErrors(t *testing.T, p *Parser) {
 	errors := p.Errors()
 	if len(errors) == 0 {
@@ -894,6 +899,11 @@ func checkParserErrors(t *testing.T, p *Parser) {
 	t.Errorf("parser has %d errors", len(errors))
 	for _, msg := range errors {
 		t.Errorf("parser error: %q", msg)
+		if err, ok := msg.(stackTracer); ok {
+			for _, f := range err.StackTrace() {
+				fmt.Printf("%+s:%d\n", f, f)
+			}
+		}
 	}
 	t.FailNow()
 }
