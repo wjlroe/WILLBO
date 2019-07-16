@@ -5,15 +5,14 @@ env:
 
 before_script:
   - pushd .. ; go get golang.org/x/lint/golint ; popd
-  - curl https://pre-commit.com/install-local.py | python -
+  - pip install --user pre-commit
   - pre-commit run --all-files
 
 go:
   - stable
 
 cache:
+  pip: true
   directories:
     - /home/travis/.cache/pre-commit
     - /home/travis/gopath/src
-    - /home/travis/.pre-commit-venv
-    - /home/travis/bin
