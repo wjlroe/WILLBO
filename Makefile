@@ -3,7 +3,7 @@ all: fmt test vet lint build
 fmt:
 	@gofmt -w .
 
-test:
+test: build
 	@go test ./...
 
 vet:
