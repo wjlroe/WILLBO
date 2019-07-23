@@ -6,7 +6,7 @@ import (
 	"io"
 
 	"github.com/wjlroe/WILLBO/lexer"
-	"github.com/wjlroe/WILLBO/token"
+	"github.com/wjlroe/WILLBO/parser"
 )
 
 const prompt = ">> "
@@ -24,12 +24,23 @@ func Start(in io.Reader, out io.Writer) {
 
 		line := scanner.Text()
 		l := lexer.New(line)
+		p := parser.New(l)
 
-		var currentToken = l.NextToken()
-
-		for currentToken.Type != token.EOF {
-			fmt.Fprintf(out, "Token Type: %q, Literal: %q\n", currentToken.Type, currentToken.Literal)
-			currentToken = l.NextToken()
+		program := p.ParseProgram()
+		if len(p.Errors()) != 0 {
+			printParserErrors(out, p.Errors())
+			continue
 		}
+
+		io.WriteString(out, program.String())
+		io.WriteString(out, "\n")
+	}
+}
+
+func printParserErrors(out io.Writer, errors []error) {
+	io.WriteString(out, "Whoops! We ran into an error!\n")
+	io.WriteString(out, " parser errors:\n")
+	for _, msg := range errors {
+		io.WriteString(out, fmt.Sprintf("\t%s\n", msg))
 	}
 }
